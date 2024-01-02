@@ -1,19 +1,14 @@
-import React from "react";
-// @ts-expect-error ts-migrate(2305) FIXME: Module '"mdui"' has no exported member 'alert'.
+import React, { useState } from "react";
 import { snackbar, alert as mduiAlert } from "mdui";
-// @ts-expect-error ts-migrate(7016) FIXME: Try `npm install @types/socket.io-client` if it ex... Remove this comment to see the full error message
+// 确保以下模块被正确安装和配置
 import io from "socket.io-client";
-// @ts-expect-error ts-migrate(7016) FIXME: Try `npm install @types/qrcode` if it exists or ad... Remove this comment to see the full error message
 import saveFile from "../../utils/fileSaver";
-import { FileInput } from "mdui-in-react";
-import { Input, Button } from "mdui-in-react";
-
-// import React, { useState } from "react";
-// import "./style.css"; // 确保你的样式文件在正确的路径
+import { FileInput, Input, Button } from "mdui-in-react";
+import "./style.css"; // 确保样式与 mdui-in-react 组件兼容
 
 const App = () => {
-  const [idInput, setIdInput] = useState("");
-  const [result, setResult] = useState("");
+	const [idInput, setIdInput] = useState("");
+	const [result, setResult] = useState("");
 
   const isIDFormatValid = (id) => {
     const regex = /^[0-9*]{17}[0-9Xx*]$/;
@@ -62,6 +57,7 @@ const App = () => {
   const validateAndGuessID = () => {
     if (!isIDFormatValid(idInput)) {
       setResult('身份证号码格式不正确。');
+      mduiAlert('错误', '身份证号码格式不正确');
       return;
     }
 
@@ -93,15 +89,14 @@ const App = () => {
   return (
     <div className="container">
       <h1>GuessID</h1>
-      <input
+      <Input 
         type="text"
-        id="idInput"
-        placeholder="请输入身份ID"
+        label="请输入身份ID"
         value={idInput}
         onChange={(e) => setIdInput(e.target.value)}
       />
-      <button onClick={validateAndGuessID}>GuessID</button>
-      <button onClick={downloadResults}>Download</button>
+      <Button raised onClick={validateAndGuessID}>GuessID</Button>
+      <Button raised onClick={downloadResults}>Download</Button>
       <p id="result">{result}</p>
     </div>
   );
